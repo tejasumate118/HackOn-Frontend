@@ -1,12 +1,40 @@
+import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Trophy, Code, Zap, BookOpen, Star, Award, Users, Gamepad, Terminal, Brain, Lock } from "lucide-react"
+import {
+  Trophy,
+  Code,
+  Zap,
+  BookOpen,
+  Star,
+  Award,
+  Users,
+  Gamepad,
+  Terminal,
+  Brain,
+  Lock,
+  GraduationCap,
+  Clock,
+} from "lucide-react"
+import { toast } from "@/components/ui/use-toast"
 
 interface DashboardContentProps {
   userName: string
+}
+
+interface Training {
+  id: number
+  title: string
+  description: string
+  duration: string
+  level: string
+}
+
+interface EnrolledTraining extends Training {
+  progress: number
 }
 
 export default function DashboardContent({ userName }: DashboardContentProps) {
@@ -46,7 +74,6 @@ export default function DashboardContent({ userName }: DashboardContentProps) {
       title: "Algorithm Arena",
       description: "Battle through algorithmic challenges in real-time",
       icon: <Terminal className="w-8 h-8 text-purple-500" />,
-      players: 234,
       difficulty: "Medium",
     },
     {
@@ -54,7 +81,6 @@ export default function DashboardContent({ userName }: DashboardContentProps) {
       title: "Code Puzzle",
       description: "Solve coding puzzles and unlock new levels",
       icon: <Brain className="w-8 h-8 text-blue-500" />,
-      players: 156,
       difficulty: "Easy",
     },
     {
@@ -62,10 +88,58 @@ export default function DashboardContent({ userName }: DashboardContentProps) {
       title: "Debug Master",
       description: "Find and fix bugs in increasingly complex code",
       icon: <Code className="w-8 h-8 text-green-500" />,
-      players: 189,
       difficulty: "Hard",
     },
   ]
+
+  // Add training data
+  const [availableTrainings, setAvailableTrainings] = useState<Training[]>([
+    {
+      id: 1,
+      title: "Data Structures Mastery",
+      description: "Learn essential data structures for efficient coding",
+      duration: "4 weeks",
+      level: "Intermediate",
+    },
+    {
+      id: 2,
+      title: "Web Development Bootcamp",
+      description: "Comprehensive course on modern web development",
+      duration: "8 weeks",
+      level: "Beginner to Advanced",
+    },
+    {
+      id: 3,
+      title: "Machine Learning Fundamentals",
+      description: "Introduction to machine learning algorithms and applications",
+      duration: "6 weeks",
+      level: "Advanced",
+    },
+  ])
+
+  const [enrolledTrainings, setEnrolledTrainings] = useState<EnrolledTraining[]>([])
+
+  const handleEnroll = (training: Training) => {
+    setEnrolledTrainings([...enrolledTrainings, { ...training, progress: 0 }])
+    setAvailableTrainings(availableTrainings.filter((t) => t.id !== training.id))
+    toast({
+      title: "Enrolled Successfully",
+      description: `You have enrolled in ${training.title}`,
+    })
+    // Navigate to the specific training page
+    if (training.id === 1) {
+      // Assuming Data Structures Mastery has id 1
+      window.location.href = "/training/data-structures-mastery"
+    }
+  }
+
+  const handleUpdateProgress = (trainingId: number, newProgress: number) => {
+    setEnrolledTrainings(enrolledTrainings.map((t) => (t.id === trainingId ? { ...t, progress: newProgress } : t)))
+    toast({
+      title: "Progress Updated",
+      description: `Your progress has been updated to ${newProgress}%`,
+    })
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -205,6 +279,76 @@ export default function DashboardContent({ userName }: DashboardContentProps) {
         </Card>
       </div>
 
+      {/* Training Courses with Games Section */}
+      <h2 className="text-2xl font-semibold mb-4 flex items-center">
+        <Gamepad className="w-6 h-6 text-green-500 mr-2" />
+        Training Courses with Games
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {[
+          {
+            id: 1,
+            title: "Data Structures Adventure",
+            description: "Learn data structures through interactive games",
+            progress: 40,
+          },
+          {
+            id: 2,
+            title: "Algorithm Quest",
+            description: "Master algorithms with fun coding challenges",
+            progress: 25,
+          },
+          { id: 3, title: "Web Dev Warrior", description: "Build web apps while playing engaging games", progress: 60 },
+        ].map((course) => (
+          <Card key={course.id}>
+            <CardHeader>
+              <CardTitle>{course.title}</CardTitle>
+              <CardDescription>{course.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Progress value={course.progress} className="w-full h-3 mb-2" />
+              <span className="text-sm text-gray-500">{course.progress}% complete</span>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full">
+                <Link href={`/training-course/${course.id}`}>Continue Course</Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+        <Card key="pyramid-loop">
+          <CardHeader>
+            <CardTitle>Pyramid Loop Visualizer</CardTitle>
+            <CardDescription>Master nested loops by creating various star patterns</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Progress value={0} className="w-full h-3 mb-2" />
+            <span className="text-sm text-gray-500">New course</span>
+          </CardContent>
+          <CardFooter>
+            <Button asChild className="w-full">
+              <Link href="/training-course/pyramid-loop">Start Course</Link>
+            </Button>
+          </CardFooter>
+        </Card>
+        {/* In the "Training Courses with Games" section, add a new card for the King vs Error Monster game */}
+        <Card key="king-vs-error">
+          <CardHeader>
+            <CardTitle>King vs Error Monster</CardTitle>
+            <CardDescription>Defeat the Error Monster by writing clean, error-free code</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Progress value={0} className="w-full h-3 mb-2" />
+            <span className="text-sm text-gray-500">New course</span>
+          </CardContent>
+          <CardFooter>
+            <Button asChild className="w-full">
+              <Link href="/training-course/king-vs-error">Start Course</Link>
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+
       {/* Games Section */}
       <h2 className="text-2xl font-semibold mb-4 flex items-center">
         <Gamepad className="w-6 h-6 text-indigo-500 mr-2" />
@@ -233,12 +377,7 @@ export default function DashboardContent({ userName }: DashboardContentProps) {
                 <CardTitle className="mt-4">{game.title}</CardTitle>
                 <CardDescription>{game.description}</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <Users className="w-4 h-4 mr-1" />
-                  {game.players} players active
-                </div>
-              </CardContent>
+              <CardContent></CardContent>
               <CardFooter>
                 <Button className="w-full group-hover:bg-primary/90 transition-colors">Play Now</Button>
               </CardFooter>
@@ -255,6 +394,77 @@ export default function DashboardContent({ userName }: DashboardContentProps) {
             <Button className="mt-4 w-full">View All Games</Button>
           </Card>
         </Link>
+      </div>
+
+      {/* Enrolled Training Section */}
+      <h2 className="text-2xl font-semibold mb-4 flex items-center">
+        <GraduationCap className="w-6 h-6 text-green-500 mr-2" />
+        Your Enrolled Training Programs
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {enrolledTrainings.map((training) => (
+          <Card key={training.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="p-3 rounded-lg bg-gray-100/50 backdrop-blur-sm">
+                  <GraduationCap className="w-8 h-8 text-green-500" />
+                </div>
+                <Badge variant="outline">{training.level}</Badge>
+              </div>
+              <CardTitle className="mt-4">{training.title}</CardTitle>
+              <CardDescription>{training.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center text-sm text-muted-foreground mb-2">
+                <Clock className="w-4 h-4 mr-1" />
+                Duration: {training.duration}
+              </div>
+              <Progress value={training.progress} className="w-full h-3 mb-2" />
+              <span className="text-sm text-gray-500">{training.progress}% complete</span>
+            </CardContent>
+            <CardFooter>
+              <Button
+                className="w-full group-hover:bg-primary/90 transition-colors"
+                onClick={() => handleUpdateProgress(training.id, Math.min(training.progress + 10, 100))}
+              >
+                Update Progress
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+
+      {/* Available Training Section */}
+      <h2 className="text-2xl font-semibold mb-4 flex items-center">
+        <GraduationCap className="w-6 h-6 text-blue-500 mr-2" />
+        Available Training Programs
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {availableTrainings.map((training) => (
+          <Card key={training.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div className="p-3 rounded-lg bg-gray-100/50 backdrop-blur-sm">
+                  <GraduationCap className="w-8 h-8 text-blue-500" />
+                </div>
+                <Badge variant="outline">{training.level}</Badge>
+              </div>
+              <CardTitle className="mt-4">{training.title}</CardTitle>
+              <CardDescription>{training.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Clock className="w-4 h-4 mr-1" />
+                Duration: {training.duration}
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full group-hover:bg-primary/90 transition-colors">
+                <Link href="/training/data-structures-mastery">View Course</Link>
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
       </div>
 
       {/* Leaderboard Section */}

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Gamepad, Search, Users, Terminal, Brain, Code, Bug, Triangle, Crown } from "lucide-react"
+import { Gamepad, Search, Terminal, Brain, Code, Bug } from "lucide-react"
 
 const games = [
   {
@@ -15,7 +15,6 @@ const games = [
     title: "Algorithm Arena",
     description: "Battle through algorithmic challenges in real-time",
     icon: <Terminal className="w-8 h-8 text-purple-500" />,
-    players: 234,
     difficulty: "Medium",
   },
   {
@@ -23,7 +22,6 @@ const games = [
     title: "Code Puzzle",
     description: "Solve coding puzzles and unlock new levels",
     icon: <Brain className="w-8 h-8 text-blue-500" />,
-    players: 156,
     difficulty: "Easy",
   },
   {
@@ -31,7 +29,6 @@ const games = [
     title: "Debug Master",
     description: "Find and fix bugs in increasingly complex code",
     icon: <Code className="w-8 h-8 text-green-500" />,
-    players: 189,
     difficulty: "Hard",
   },
   {
@@ -39,7 +36,6 @@ const games = [
     title: "Data Structure Duel",
     description: "Compete in implementing efficient data structures",
     icon: <Gamepad className="w-8 h-8 text-red-500" />,
-    players: 201,
     difficulty: "Hard",
   },
   {
@@ -47,7 +43,6 @@ const games = [
     title: "Syntax Sprint",
     description: "Race against time to write correct syntax",
     icon: <Terminal className="w-8 h-8 text-yellow-500" />,
-    players: 278,
     difficulty: "Easy",
   },
   {
@@ -55,24 +50,13 @@ const games = [
     title: "AI Challenge",
     description: "Develop AI algorithms to solve complex problems",
     icon: <Brain className="w-8 h-8 text-indigo-500" />,
-    players: 145,
     difficulty: "Expert",
-  },
-  {
-    id: 7,
-    title: "Crosses Classes",
-    description: "Master object-oriented programming with interactive class diagrams",
-    icon: <Code className="w-8 h-8 text-emerald-500" />,
-    players: 167,
-    difficulty: "Medium",
-    isActive: true,
   },
   {
     id: 8,
     title: "CrossClasses",
     description: "Master object-oriented programming concepts with this crossword-style puzzle",
     icon: <Code className="w-8 h-8 text-teal-500" />,
-    players: 189,
     difficulty: "Medium",
     isActive: true,
   },
@@ -81,26 +65,7 @@ const games = [
     title: "Bug Buster",
     description: "Hunt down and eliminate bugs in various code snippets",
     icon: <Bug className="w-8 h-8 text-orange-500" />,
-    players: 210,
     difficulty: "Medium",
-    isActive: true,
-  },
-  {
-    id: 10,
-    title: "Pyramid Loop Visualizer",
-    description: "Visualize and master nested loops by building pyramids",
-    icon: <Triangle className="w-8 h-8 text-pink-500" />,
-    players: 175,
-    difficulty: "Easy",
-    isActive: true,
-  },
-  {
-    id: 11,
-    title: "King vs Error Monster",
-    description: "Defeat the Error Monster by writing clean, error-free code",
-    icon: <Crown className="w-8 h-8 text-amber-500" />,
-    players: 230,
-    difficulty: "Hard",
     isActive: true,
   },
 ]
@@ -158,12 +123,7 @@ export default function ProgrammingGamesDashboard() {
                   <CardTitle className="mt-4">{game.title}</CardTitle>
                   <CardDescription>{game.description}</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Users className="w-4 h-4 mr-1" />
-                    {game.players} players active
-                  </div>
-                </CardContent>
+                <CardContent></CardContent>
                 <CardFooter>
                   <Button className="w-full group-hover:bg-primary/90 transition-colors">Play Now</Button>
                 </CardFooter>

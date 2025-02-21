@@ -17,18 +17,12 @@ Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { name?: string; active?: boolean; gameCard?: boolean }
->(({ className, name = "", active = false, gameCard = false, ...props }, ref) => (
+  React.HTMLAttributes<HTMLDivElement> & { name?: string; active?: boolean }
+>(({ className, name = "", active = false, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      "flex flex-col space-y-1.5 p-6",
-      active && "bg-primary/10 border-l-4 border-primary",
-      gameCard && "cursor-pointer transition-all duration-300 hover:bg-secondary/50",
-      className,
-    )}
+    className={cn("flex flex-col space-y-1.5 p-6", active && "bg-primary/10 border-l-4 border-primary", className)}
     data-active={active}
-    data-game-card={gameCard}
     {...props}
   >
     {name && <h3 className={cn("text-lg font-semibold", active && "text-primary")}>{name}</h3>}
