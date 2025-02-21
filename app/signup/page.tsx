@@ -20,11 +20,9 @@ export default function SignUpPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would typically handle the sign-up logic
     console.log("Sign-up attempt with:", name, email, password, confirmPassword)
-    // Store the user's name in localStorage (in a real app, you'd use a more secure method)
     localStorage.setItem("userName", name)
-    // Redirect to the dashboard
+  
     router.push("/dashboard")
   }
 
@@ -46,7 +44,7 @@ export default function SignUpPage() {
               <Input
                 id="name"
                 type="text"
-                placeholder="John Doe"
+                placeholder="Anish Gurumukhi"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
